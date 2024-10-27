@@ -49,9 +49,15 @@ public class Manager : MonoBehaviour
     TerrainCollider terrainCollider;
 
     public int score = 0;
+
     public bool _gameOver = false;
+
     public GameObject winScreen;
     public GameObject gaameOverScreen;
+    public GameObject GuidePanel;
+    float time = 7f;
+    public Text guideText;
+
     public Text scoreText;
     public GameObject _player;
     float timer;
@@ -74,19 +80,20 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         _player = GameObject.FindGameObjectWithTag("Player");
-
         terrainCollider = terrain.GetComponent<TerrainCollider>();
         treeManager.UpdateTrees(currentSeason); 
 
         sunParticleSystem.Stop();
         snowParticleSystem.Stop();
         thunderParticleSystem.Stop();
-      
-        
+
+        StartCoroutine(GuideEnable(time));
+
         StartCoroutine(Weather());
         UpdateSeasonsVisuals();
-       
+
        
     }
 
@@ -98,8 +105,7 @@ public class Manager : MonoBehaviour
             UpdateSkyBox();
             UpdateFrictionForSeason();
             treeManager.UpdateTrees(currentSeason);
-
-        StartCoroutine(SeasonTimer());
+            StartCoroutine(SeasonTimer());
     }
 
     void UpdateSeasonsVisuals()
@@ -137,7 +143,7 @@ public class Manager : MonoBehaviour
             switch (currentSeason)
             {
                 case Season.Summer:
-                    if (SummerGame.Instance.mushroomsCollected >= 3)
+                    if (SummerGame.Instance.mushroomsCollected >= 1)
                     {
                         ChangeSeason(Season.Autumn);
                     }
@@ -148,7 +154,7 @@ public class Manager : MonoBehaviour
                     }
                     break;
                 case Season.Autumn:
-                    ChangeSeason(Season.Winter);
+                    UpdateSeasonsVisuals();
                     break;
                 case Season.Winter:
                     ChangeSeason(Season.Spring);
@@ -250,8 +256,18 @@ public class Manager : MonoBehaviour
 
 
     }
-    
-   
+     IEnumerator GuideEnable(float time)
+    {
+        GuidePanel.SetActive(true);
+        yield return new WaitForSeconds(5);
+
+        guideText.text = "You must find them all before the time up...";
+        yield return new WaitForSeconds(time);
+        guideText.text = "Good Luck..!";
+        GuidePanel.SetActive(false);
+
+    }
+
     //void UpdateDetails()
     //{
 

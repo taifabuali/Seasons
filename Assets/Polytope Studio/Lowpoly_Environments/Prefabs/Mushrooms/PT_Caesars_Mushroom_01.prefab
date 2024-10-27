@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 8064440990309985490}
   - component: {fileID: 5192176564893538328}
   - component: {fileID: 8873293906711944233}
+  - component: {fileID: 5126189561812012417}
   m_Layer: 0
   m_Name: PT_Caesars_Mushroom_01
-  m_TagString: Untagged
+  m_TagString: Mushroom
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,3 +98,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreValue: 1
+--- !u!136 &5126189561812012417
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5984911598340929997}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.17706703
+  m_Height: 0.2859373
+  m_Direction: 1
+  m_Center: {x: -0.002418138, y: 0.12496347, z: 0.0038491488}

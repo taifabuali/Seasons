@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - trees
+  - CinemachineTarget
+  - Mushroom
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,7 +15,10 @@ public class SummerGame : MonoBehaviour
 
     public GameObject hintBoard;
     public Text hintMessage;
+    public GameObject hintPanel;
+
     public GameObject gameOverPanel;
+    public Text gameOverText;
 
     public Text timerText;
     public Text scoreText;
@@ -40,27 +44,26 @@ public class SummerGame : MonoBehaviour
      void Start()
     {
         timer = gameDuration;
-        hintMessage.gameObject.SetActive(false);
+        hintPanel.gameObject.SetActive(false);
         mushroomsCollected = 0;
         gameActive = true;
 
         gameOverPanel.SetActive(false);
         scoreText.text = "Score: 0";
 
-        foreach (Vector3 position in mushroomPositions)
-        {
-            Instantiate(mushroomPrefab, position, Quaternion.identity);
-        }
+        
         StartCoroutine(UpdateTimer());
+
     }
     
+
 
     public void ResetGame()
     {
         timer = gameDuration;
         mushroomsCollected = 0;
         gameActive = false;
-        hintMessage.gameObject.SetActive(false);
+        hintPanel.gameObject.SetActive(false);
         scoreText.text = "Score: 0";
         gameOverPanel.SetActive(false);
         GameObject[] mushrooms = GameObject.FindGameObjectsWithTag("Mushroom");
@@ -90,8 +93,10 @@ public class SummerGame : MonoBehaviour
     public void ShowHint(string hint)
     {
         hintMessage.text = hint;
-        hintMessage.gameObject.SetActive(true);
+        StartCoroutine(HintEnable());
         hintShown = true;
+        CreateMushroom(hintShown);
+
     }
 
     public void CollectMushroom(GameObject mushroom)
@@ -111,8 +116,27 @@ public class SummerGame : MonoBehaviour
     {
         gameActive = false;
         gameOverPanel.SetActive(true);
-        hintMessage.text = success ? "You collected all mushrooms!" : "Time's up! You lost.";
-       
-    }
+        gameOverText.text = success ? "You collected all mushrooms!" : "Time's up! You lost.";
+        mushroomsCollected = 0;
 
+
+
+    }
+    public void CreateMushroom(bool hint)
+    { 
+        if(hint)
+            foreach (Vector3 position in mushroomPositions)
+            {
+                if (hintShown)
+                    Instantiate(mushroomPrefab, position, Quaternion.identity);
+            }
+    }
+        IEnumerator HintEnable()
+    {
+        hintPanel.SetActive(true);
+        
+        yield return new WaitForSeconds(5);
+        hintPanel.SetActive(false);
+
+    }
 }

@@ -1,6 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Manager : MonoBehaviour
 {
@@ -23,16 +28,7 @@ public class Manager : MonoBehaviour
     public Material _springSkyBox;
     public Material _winterSkyBox;
 
-    //public GameObject summerTreePrefab;
-    //public GameObject springTreePrefab;
-    //public GameObject winterTreePrefab; 
-    //public GameObject autumnTreePrefab;
-
-    //GameObject[] Trees;
-    //public TreePool summerTreePool;
-    //public TreePool autumnTreePool;
-    //public TreePool winterTreePool;
-    //public TreePool springTreePool;
+   
 
     public Season currentSeason;
     private int switchWeather;
@@ -48,46 +44,62 @@ public class Manager : MonoBehaviour
     public PhysicMaterial springPhyMat;
 
     public GameObject environment;
-    private MovePlayer player;
+  
     
     TerrainCollider terrainCollider;
-    
-    public float timer = 0f;
-    public float resetTimer = 20f;
 
+    public int score = 0;
+    public bool _gameOver = false;
+    public GameObject winScreen;
+    public GameObject gaameOverScreen;
+    public Text scoreText;
+    public GameObject _player;
+    float timer;
+    float seasonDuration = 420f;
+
+    public static Manager Instance { get; set;  }
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+
+        }
+        else
+        {
+            Destroy(gameObject);
+
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
-        terrainCollider = terrain.GetComponent<TerrainCollider>();
-       //Trees = GameObject.FindGameObjectsWithTag("trees");
+        _player = GameObject.FindGameObjectWithTag("Player");
 
+        terrainCollider = terrain.GetComponent<TerrainCollider>();
         treeManager.UpdateTrees(currentSeason); 
 
         sunParticleSystem.Stop();
         snowParticleSystem.Stop();
         thunderParticleSystem.Stop();
       
-        player = FindObjectOfType<MovePlayer>();
         
         StartCoroutine(Weather());
         UpdateSeasonsVisuals();
-        //UpdateDetails();
-        //UpdateCharacterSliding();
+       
        
     }
 
     public void ChangeSeason(Season newSeason)
     {
-        currentSeason = newSeason;
-        UpdateSeasonsVisuals();
-        //UpdateDetails();
-        //UpdateCharacterSliding();
-        UpdateSkyBox();
-        UpdateFrictionForSeason();
-        treeManager.UpdateTrees(currentSeason);
+        
+            currentSeason = newSeason;
+            UpdateSeasonsVisuals();
+            UpdateSkyBox();
+            UpdateFrictionForSeason();
+            treeManager.UpdateTrees(currentSeason);
 
-
+        StartCoroutine(SeasonTimer());
     }
 
     void UpdateSeasonsVisuals()
@@ -115,16 +127,25 @@ public class Manager : MonoBehaviour
                 break;
         }
     }
-
     IEnumerator Weather()
     {
+        ChangeSeason(Season.Summer);
+
         while (true)
         {
-            yield return new WaitForSeconds(200f);
+            yield return new WaitForSeconds(seasonDuration);
             switch (currentSeason)
             {
                 case Season.Summer:
-                    ChangeSeason(Season.Autumn);
+                    if (SummerGame.Instance.mushroomsCollected >= 3)
+                    {
+                        ChangeSeason(Season.Autumn);
+                    }
+                    else
+                    {
+                        SummerGame.Instance.ResetGame();
+
+                    }
                     break;
                 case Season.Autumn:
                     ChangeSeason(Season.Winter);
@@ -138,25 +159,21 @@ public class Manager : MonoBehaviour
             }
         }
     }
+    IEnumerator SeasonTimer()
+    {
+        timer = seasonDuration;
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
 
-    //private void UpdateCharacterSliding()
-    //{
-    //    switch (currentSeason)
-    //    {
-    //        case Season.Winter:
-    //            player.ApplySliding(player.winterFraction);
-    //            break;
-    //        default:
-    //            player.ApplySliding(player.normalFraction);
-    //            break;
-    //    }
-    //}
-    //void ApplyTerrainLayer(TerrainLayer terrainLayer)
-    //{
-    //    {
-    //        terrainLayer
-    //    };
-    //}
+            yield return null;
+        }
+        if(currentSeason == Season.Summer && SummerGame.Instance.mushroomsCollected < 3)
+        {
+            Lose();
+        }
+    }
+
     void UpdateSkyBox()
     {
         switch (currentSeason)
@@ -198,6 +215,43 @@ public class Manager : MonoBehaviour
         }
 
     }
+    public void AddScore(int points)
+    {
+        score += points;
+        scoreText.text = "Score: " + score;
+        CheckWinCondition();
+
+    }
+    public void CheckWinCondition()
+    {
+        if(score>=3)
+        {
+            Win();
+        }
+    }
+    public void Win()
+    {
+        _player.gameObject.SetActive(false);
+
+        
+        winScreen.SetActive(true);
+        Debug.Log("You Win! ");
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+    }
+    public void Lose()
+    {
+        _player.gameObject.SetActive(false);
+        gaameOverScreen.SetActive(true);
+        Debug.Log("Game over ! you lose!");
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+
+    }
+    
+   
     //void UpdateDetails()
     //{
 
@@ -226,5 +280,5 @@ public class Manager : MonoBehaviour
     //        }
     //    }
 
-//    }
+    //    }
 }

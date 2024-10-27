@@ -12,11 +12,17 @@ public class ChangeSeasons : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer > changeInterval)
+        if(!managment._gameOver)
         {
-            ChangeToNextSeason();
-            timer = 0f;
+            timer += Time.deltaTime;
+            if (timer > changeInterval)
+            {
+                if (managment.score >= 3)
+                {
+                    ChangeToNextSeason();
+                    timer = 0f;
+                }
+            }
         }
     }
 

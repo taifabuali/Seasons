@@ -38,10 +38,7 @@ public class Manager : MonoBehaviour
     public Material winterMaterial;
     public Material springMaterial;
 
-    public PhysicMaterial summerPhyMat;
-    public PhysicMaterial autumnPhyMat;
-    public PhysicMaterial winterPhyMat;
-    public PhysicMaterial springPhyMat;
+    public PhysicMaterial seasonalPhysicMaterial;
 
     public GameObject environment;
   
@@ -83,11 +80,14 @@ public class Manager : MonoBehaviour
         
         _player = GameObject.FindGameObjectWithTag("Player");
         terrainCollider = terrain.GetComponent<TerrainCollider>();
-        treeManager.UpdateTrees(currentSeason); 
+        treeManager.UpdateTrees(currentSeason);
+
+        UpdateFrictionForSeason();
 
         sunParticleSystem.Stop();
         snowParticleSystem.Stop();
         thunderParticleSystem.Stop();
+
         StartCoroutine(Weather());
         UpdateSeasonsVisuals();
 
@@ -108,6 +108,11 @@ public class Manager : MonoBehaviour
             UpdateFrictionForSeason();
             treeManager.UpdateTrees(currentSeason);
            StartCoroutine(SeasonTimer());
+        PlayerSeasonsMovement playerMovement = _player.GetComponent<PlayerSeasonsMovement>();
+        if (playerMovement != null)
+        {
+            playerMovement.UpdateMovementSpeed();
+        }
     }
 
     void UpdateSeasonsVisuals()
@@ -137,32 +142,24 @@ public class Manager : MonoBehaviour
     }
     IEnumerator Weather()
     {
-
         while (true)
         {
             yield return new WaitForSeconds(seasonDuration);
+
             switch (currentSeason)
             {
                 case Season.Summer:
-                   // game.SetActive(true);
-                    if (SummerGame.Instance.EndGame(true))
-                    {
-                      //  game.SetActive(false);
-                        Debug.Log("autumn");
-                        ChangeSeason(Season.Autumn);
-                    }
-                    else if (SummerGame.Instance.EndGame(false))
-                    {
-                        SummerGame.Instance.ResetGame();
-                        Debug.Log("reset");
-                    }
                     break;
+
                 case Season.Autumn:
-                    UpdateSeasonsVisuals();
+                    Debug.Log("autumn");
+                  
                     break;
+
                 case Season.Winter:
                     ChangeSeason(Season.Spring);
                     break;
+
                 case Season.Spring:
                     ChangeSeason(Season.Summer);
                     break;
@@ -209,21 +206,27 @@ public class Manager : MonoBehaviour
         switch (currentSeason)
         {
             case Season.Summer:
-                terrainCollider.material = summerPhyMat;
-                 break;
+                seasonalPhysicMaterial.dynamicFriction = 0.6f; 
+                seasonalPhysicMaterial.staticFriction = 0.6f;
+                break;
             case Season.Autumn:
-
-                terrainCollider.material = autumnPhyMat;
+                seasonalPhysicMaterial.dynamicFriction = 0.4f; 
+                seasonalPhysicMaterial.staticFriction = 0.4f;
                 break;
             case Season.Winter:
-                terrainCollider.material = winterPhyMat;
+                seasonalPhysicMaterial.dynamicFriction = 0.1f; //(slippery)
+                seasonalPhysicMaterial.staticFriction = 0.1f;
                 break;
             case Season.Spring:
-                terrainCollider.material = springPhyMat;
+                seasonalPhysicMaterial.dynamicFriction = 0.3f; 
+                seasonalPhysicMaterial.staticFriction = 0.3f;
                 break;
-
         }
-
+        Collider playerCollider = _player.GetComponent<Collider>();
+        if (playerCollider != null)
+        {
+            playerCollider.material = seasonalPhysicMaterial;
+        }
     }
     public void AddScore(int points)
     {
@@ -273,34 +276,20 @@ public class Manager : MonoBehaviour
         GuidePanel.SetActive(false);
 
     }
+    public void OnSummerGameEnded(bool success)
+    {
+        if (success)
+        {
+            ChangeSeason(Season.Autumn);
+            Debug.Log("Transitioning to Autumn");
+        }
+        else
+        {
+           
+            SummerGame.Instance.ResetGame();
+            Debug.Log("Resetting Summer Game");
+        }
+    }
 
-    //void UpdateDetails()
-    //{
 
-    //    foreach (GameObject tree in Trees)
-    //    {
-    //        Vector3 treePosi = tree.transform.position;
-    //        Quaternion treeRotation = tree.transform.rotation;
-    //        Destroy(tree);
-
-
-    //        switch (currentSeason)
-    //        {
-    //            case Season.Summer:
-    //                summerTreePool.GetTree(treePosi,treeRotation);
-    //                break;
-    //            case Season.Autumn:
-    //                autumnTreePool.GetTree(treePosi, treeRotation);
-    //                break;
-    //            case Season.Winter:
-    //                winterTreePool.GetTree(treePosi, treeRotation);
-    //                break;
-    //            case Season.Spring:
-    //                springTreePool.GetTree(treePosi, treeRotation);
-    //                break;
-
-    //        }
-    //    }
-
-    //    }
 }

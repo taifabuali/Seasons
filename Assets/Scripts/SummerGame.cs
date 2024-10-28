@@ -112,26 +112,17 @@ public class SummerGame : MonoBehaviour
         }
     }
 
- public bool EndGame(bool success)
+    public void EndGame(bool success)
     {
-        
         gameActive = false;
         gameOverText.text = success ? "You collected all mushrooms!" : "Time's up! You lost.";
         mushroomsCollected = 0;
         StartCoroutine(endEnable());
 
-        return success;
+        Manager.Instance.OnSummerGameEnded(success);
 
     }
-    //public void CreateMushroom(bool hint)
-   // { 
-//if(hint)
-       //     foreach (Vector3 position in mushroomPositions)
-            //{
-             //   if (hintShown)
-                //    Instantiate(mushroomPrefab, position, Quaternion.identity);
-           // }
-  //  }
+    
     IEnumerator HintEnable()
     {
         hintPanel.SetActive(true);
@@ -148,4 +139,13 @@ public class SummerGame : MonoBehaviour
         gameOverPanel.SetActive(false);
 
     }
+    //public void CreateMushroom(bool hint)
+    // { 
+    //if(hint)
+    //     foreach (Vector3 position in mushroomPositions)
+    //{
+    //   if (hintShown)
+    //    Instantiate(mushroomPrefab, position, Quaternion.identity);
+    // }
+    //  }
 }

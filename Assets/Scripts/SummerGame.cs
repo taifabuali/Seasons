@@ -62,7 +62,7 @@ public class SummerGame : MonoBehaviour
     {
         timer = gameDuration;
         mushroomsCollected = 0;
-        gameActive = false;
+        gameActive = true;
         hintPanel.gameObject.SetActive(false);
         scoreText.text = "Score: 0";
         gameOverPanel.SetActive(false);
@@ -73,7 +73,7 @@ public class SummerGame : MonoBehaviour
 
         }
 
-
+        StartCoroutine(UpdateTimer());
     }
     IEnumerator UpdateTimer()
     {
@@ -117,7 +117,7 @@ public class SummerGame : MonoBehaviour
         gameActive = false;
         gameOverPanel.SetActive(true);
         gameOverText.text = success ? "You collected all mushrooms!" : "Time's up! You lost.";
-        mushroomsCollected = 0;
+        //mushroomsCollected = 0;
 
 
 
@@ -131,7 +131,7 @@ public class SummerGame : MonoBehaviour
                     Instantiate(mushroomPrefab, position, Quaternion.identity);
             }
     }
-        IEnumerator HintEnable()
+    IEnumerator HintEnable()
     {
         hintPanel.SetActive(true);
         

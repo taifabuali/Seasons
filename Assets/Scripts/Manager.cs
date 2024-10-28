@@ -55,7 +55,7 @@ public class Manager : MonoBehaviour
     public GameObject winScreen;
     public GameObject gaameOverScreen;
     public GameObject GuidePanel;
-    float time = 7f;
+    float time = 10f;
     public Text guideText;
 
     public Text scoreText;
@@ -135,7 +135,7 @@ public class Manager : MonoBehaviour
     }
     IEnumerator Weather()
     {
-        ChangeSeason(Season.Summer);
+       ChangeSeason(Season.Summer);
 
         while (true)
         {
@@ -259,11 +259,13 @@ public class Manager : MonoBehaviour
      IEnumerator GuideEnable(float time)
     {
         GuidePanel.SetActive(true);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(time-5);
 
         guideText.text = "You must find them all before the time up...";
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(time-3);
         guideText.text = "Good Luck..!";
+        yield return new WaitForSeconds(time);
+
         GuidePanel.SetActive(false);
 
     }

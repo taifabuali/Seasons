@@ -11,7 +11,7 @@ public class Manager : MonoBehaviour
 {
     public enum Season { Summer, Autumn, Winter, Spring }
     public TreeManager treeManager;
-
+    public GameObject game;   
     public ParticleSystem sunParticleSystem;
     public ParticleSystem thunderParticleSystem;
     public ParticleSystem snowParticleSystem;
@@ -55,7 +55,7 @@ public class Manager : MonoBehaviour
     public GameObject winScreen;
     public GameObject gaameOverScreen;
     public GameObject GuidePanel;
-    float time = 10f;
+    float time = 5f;
     public Text guideText;
 
     public Text scoreText;
@@ -88,24 +88,26 @@ public class Manager : MonoBehaviour
         sunParticleSystem.Stop();
         snowParticleSystem.Stop();
         thunderParticleSystem.Stop();
+        StartCoroutine(Weather());
+        UpdateSeasonsVisuals();
 
         StartCoroutine(GuideEnable(time));
 
-        StartCoroutine(Weather());
-        UpdateSeasonsVisuals();
+        
 
        
     }
 
     public void ChangeSeason(Season newSeason)
     {
-        
+   
+
             currentSeason = newSeason;
             UpdateSeasonsVisuals();
             UpdateSkyBox();
             UpdateFrictionForSeason();
             treeManager.UpdateTrees(currentSeason);
-            StartCoroutine(SeasonTimer());
+           StartCoroutine(SeasonTimer());
     }
 
     void UpdateSeasonsVisuals()
@@ -135,7 +137,6 @@ public class Manager : MonoBehaviour
     }
     IEnumerator Weather()
     {
-       ChangeSeason(Season.Summer);
 
         while (true)
         {
@@ -143,14 +144,17 @@ public class Manager : MonoBehaviour
             switch (currentSeason)
             {
                 case Season.Summer:
-                    if (SummerGame.Instance.mushroomsCollected >= 1)
+                   // game.SetActive(true);
+                    if (SummerGame.Instance.EndGame(true))
                     {
+                      //  game.SetActive(false);
+                        Debug.Log("autumn");
                         ChangeSeason(Season.Autumn);
                     }
-                    else
+                    else if (SummerGame.Instance.EndGame(false))
                     {
                         SummerGame.Instance.ResetGame();
-
+                        Debug.Log("reset");
                     }
                     break;
                 case Season.Autumn:
@@ -259,10 +263,10 @@ public class Manager : MonoBehaviour
      IEnumerator GuideEnable(float time)
     {
         GuidePanel.SetActive(true);
-        yield return new WaitForSeconds(time-5);
+        yield return new WaitForSeconds(time-4);
 
         guideText.text = "You must find them all before the time up...";
-        yield return new WaitForSeconds(time-3);
+        yield return new WaitForSeconds(time-2);
         guideText.text = "Good Luck..!";
         yield return new WaitForSeconds(time);
 

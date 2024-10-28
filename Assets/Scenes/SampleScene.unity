@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.54762655, g: 0.85462356, b: 0.92225635, a: 1}
+  m_IndirectSpecularColor: {r: 0.5476417, g: 0.8546245, b: 0.92225707, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -153,7 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terrain: {fileID: 500188843}
-  summerTreePrefab: {fileID: 5935278547815300987, guid: e05ae677c7b3bc546bd36b488586fb0c, type: 3}
+  summerTreePrefab:
+  - {fileID: 5935278547815300987, guid: e05ae677c7b3bc546bd36b488586fb0c, type: 3}
+  - {fileID: 6444807355431749394, guid: f593bc20677ebf14abd27a4853408c68, type: 3}
   winterTreePrefab: {fileID: 6117071349010126079, guid: d250af4848f51154f9a2bf6a85b60ac2, type: 3}
   autumnTreePrefab: {fileID: 545071354731874043, guid: 059eecd3f9d8f5148b36874da77673eb, type: 3}
   springTreePrefab: {fileID: 873261478477796481, guid: c0fdfdeafe3a1404a8766f946dd531d0, type: 3}
@@ -204,6 +206,8 @@ MonoBehaviour:
   mushroomPrefab: {fileID: 5984911598340929997, guid: 5228c984e5be7284d8d83c18096254dd, type: 3}
   mushroomPositions:
   - {x: 43.398, y: 15.822, z: 328.169}
+  - {x: 359.2, y: -0.000003814697, z: 141.9}
+  - {x: 220.2, y: -0.000003814697, z: 37.3}
   hintBoard: {fileID: 744173129}
   hintMessage: {fileID: 1077703566}
   hintPanel: {fileID: 1425484386}
@@ -780,7 +784,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 3.8, y: -38.2}
-  m_SizeDelta: {x: 113.27, y: 100}
+  m_SizeDelta: {x: 296.2, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &741392627
 MonoBehaviour:
@@ -815,7 +819,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Game Over
+  m_Text: You collected all mushrooms!
 --- !u!222 &741392628
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -942,8 +946,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e443a8395bfbf747ae41a9d5e6b8a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintMessage: There are a triplets mountains look near the biggest one under an
-    apple tree .
+  hintMessage:
+  - There are a triplets mountains loo; near the biggest one under an apple tree
+    ..
+  - Near the cross roads under a tree you can fid one ..
+  - 'Find a small valley full of red poppy.... '
+  hintMessagetext: {fileID: 1077703566}
+  hintPanel: {fileID: 1425484386}
+  mushroomPrefab: {fileID: 5984911598340929997, guid: 5228c984e5be7284d8d83c18096254dd, type: 3}
+  mushroomTransform:
+  - {x: 43.398, y: 15.822, z: 328.169}
+  - {x: 220.2, y: -0.000003814697, z: 37.3}
+  - {x: 348.3, y: -0.00001525879, z: 139.547}
 --- !u!1 &797675822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,8 +1233,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 66.39, y: -99.3}
-  m_SizeDelta: {x: 162.72, y: 225.9}
+  m_AnchoredPosition: {x: 6, y: -118.7}
+  m_SizeDelta: {x: 286.1, y: 319}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1077703566
 MonoBehaviour:
@@ -1290,7 +1304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 28.140001
+      value: 229.59999
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1298,7 +1312,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 34.34
+      value: 65.2
       objectReference: {fileID: 0}
     - target: {fileID: 8944336655422409503, guid: f6d148d888ffbf54b9afe9936dfaec1f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1449,6 +1463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeManager: {fileID: 141163198}
+  game: {fileID: 316285262}
   sunParticleSystem: {fileID: 2105975045}
   thunderParticleSystem: {fileID: 2105975045}
   snowParticleSystem: {fileID: 2105975045}
@@ -1481,7 +1496,7 @@ MonoBehaviour:
   _autumnSkyBox: {fileID: 2100000, guid: de1d750fefeeac642bf9b11a3978ccf5, type: 2}
   _springSkyBox: {fileID: 2100000, guid: 416ee80c6a09f9b4fb43d9aa43f4a057, type: 2}
   _winterSkyBox: {fileID: 2100000, guid: e0a21ebc98cee4e46bbae873ec0be703, type: 2}
-  currentSeason: 1
+  currentSeason: 0
   summerMaterial: {fileID: 2100000, guid: 7c91e9b6295f35c42a76404732d16a3a, type: 2}
   autumnMaterial: {fileID: 2100000, guid: f351b5eb981f1da458c90af6a70a6c20, type: 2}
   winterMaterial: {fileID: 2100000, guid: 288112959aaafd347a2a43782e2f7eaf, type: 2}
@@ -2165,7 +2180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 27.94
+      value: 229.4
       objectReference: {fileID: 0}
     - target: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2173,7 +2188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 38.34
+      value: 69.2
       objectReference: {fileID: 0}
     - target: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2207,6 +2222,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerArmature
       objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: MoveSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4416926081852918490, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+      propertyPath: SprintSpeed
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6982812146204527121, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
       propertyPath: m_Controller
       value: 
@@ -2234,7 +2257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 28.140001
+      value: 229.59999
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2242,7 +2265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 34.34
+      value: 65.2
       objectReference: {fileID: 0}
     - target: {fileID: 2070925441746177912, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_LocalRotation.w

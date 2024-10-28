@@ -44,7 +44,7 @@ public class SummerGame : MonoBehaviour
      void Start()
     {
         timer = gameDuration;
-        hintPanel.gameObject.SetActive(false);
+        //hintPanel.gameObject.SetActive(false);
         mushroomsCollected = 0;
         gameActive = true;
 
@@ -95,7 +95,7 @@ public class SummerGame : MonoBehaviour
         hintMessage.text = hint;
         StartCoroutine(HintEnable());
         hintShown = true;
-        CreateMushroom(hintShown);
+        //CreateMushroom(hintShown);
 
     }
 
@@ -112,31 +112,40 @@ public class SummerGame : MonoBehaviour
         }
     }
 
-    void EndGame(bool success)
+ public bool EndGame(bool success)
     {
+        
         gameActive = false;
-        gameOverPanel.SetActive(true);
         gameOverText.text = success ? "You collected all mushrooms!" : "Time's up! You lost.";
-        //mushroomsCollected = 0;
+        mushroomsCollected = 0;
+        StartCoroutine(endEnable());
 
-
+        return success;
 
     }
-    public void CreateMushroom(bool hint)
-    { 
-        if(hint)
-            foreach (Vector3 position in mushroomPositions)
-            {
-                if (hintShown)
-                    Instantiate(mushroomPrefab, position, Quaternion.identity);
-            }
-    }
+    //public void CreateMushroom(bool hint)
+   // { 
+//if(hint)
+       //     foreach (Vector3 position in mushroomPositions)
+            //{
+             //   if (hintShown)
+                //    Instantiate(mushroomPrefab, position, Quaternion.identity);
+           // }
+  //  }
     IEnumerator HintEnable()
     {
         hintPanel.SetActive(true);
         
         yield return new WaitForSeconds(5);
         hintPanel.SetActive(false);
+
+    }
+    IEnumerator endEnable()
+    {
+        gameOverPanel.SetActive(true);
+
+        yield return new WaitForSeconds(5);
+        gameOverPanel.SetActive(false);
 
     }
 }

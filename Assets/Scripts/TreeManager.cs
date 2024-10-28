@@ -7,7 +7,7 @@ using static Manager;
 public class TreeManager : MonoBehaviour
 {
     public Terrain terrain;  // Reference to the Terrain
-    public GameObject summerTreePrefab;
+    public GameObject[] summerTreePrefab;
     public GameObject winterTreePrefab;
     public GameObject autumnTreePrefab;
     public GameObject springTreePrefab;
@@ -29,7 +29,8 @@ public class TreeManager : MonoBehaviour
             switch (currentSeason)
             {
                 case Season.Summer:
-                    trees[i].prototypeIndex = GetTreePrototypeIndex(summerTreePrefab);
+                    trees[i].prototypeIndex = GetTreePrototypeIndex(summerTreePrefab[0]);
+                   
                     break;
                 case Season.Autumn:
                     trees[i].prototypeIndex = GetTreePrototypeIndex(autumnTreePrefab);

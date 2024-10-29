@@ -79,8 +79,8 @@ public class SummerGame : MonoBehaviour
     {
         while (gameActive)
         {
-            timer -= Time.deltaTime;
-            timerText.text = "Time Left: " + Mathf.Floor(timer).ToString() + "seconds";
+            timer -= Time.deltaTime ;
+            timerText.text = "Time Left:" + Mathf.Floor(timer/60).ToString()+ " Minutes";
             if (timer <= 0)
             {
                 EndGame(false);

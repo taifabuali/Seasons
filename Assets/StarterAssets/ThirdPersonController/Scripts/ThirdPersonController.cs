@@ -159,8 +159,23 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
-        }
+            AimShoot();
 
+        }
+        private void AimShoot()
+        {
+            if (_input.isAiming && Grounded && !_input.sprint)
+            {
+                _animator.SetBool("Aiming", _input.isAiming);
+                _animator.SetBool("Shooting", _input.isShooting);
+            }
+            else
+            {
+                _animator.SetBool("Aiming",false);
+                _animator.SetBool("Shooting", false);
+
+            }
+        }
         private void LateUpdate()
         {
             CameraRotation();

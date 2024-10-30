@@ -6,25 +6,17 @@ using UnityEngine.Windows;
 
 public class ArrowAndBow : MonoBehaviour
 {
-    public GameObject arrowPrefab;
-    public Transform ShootPoint;
-    public float arrowSpeed;
-    private StarterAssetsInputs _input;
-    // Start is called before the first frame update
-
-    void ShootArrow()
+    private void Start()
     {
-
-
-        if (_input.isShooting && !_input.sprint)
-        {
-            GameObject Arrow = Instantiate(arrowPrefab, ShootPoint.position, Quaternion.identity);
-            Rigidbody rb = Arrow.GetComponent<Rigidbody>();
-            rb.velocity = ShootPoint.forward
-                * arrowSpeed;
-
-        }
-       
-
+        Destroy(gameObject, 10);    
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+            Destroy(transform.GetComponent<Rigidbody>());
+        
+    }
+
+
 }

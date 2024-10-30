@@ -110,6 +110,8 @@ namespace StarterAssets
 
         private bool _hasAnimator;
 
+        public GameObject arrowPrefab;
+        public Transform ShootPoint;
         private bool IsCurrentDeviceMouse
         {
             get
@@ -175,6 +177,13 @@ namespace StarterAssets
                 _animator.SetBool("Shooting", false);
 
             }
+        }
+
+        public void Shoot()
+        {
+            GameObject Arrow = Instantiate(arrowPrefab, ShootPoint.position, transform.rotation);
+            Arrow.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
+
         }
         private void LateUpdate()
         {

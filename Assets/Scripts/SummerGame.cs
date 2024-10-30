@@ -115,7 +115,7 @@ public class SummerGame : MonoBehaviour
     public void EndGame(bool success)
     {
         gameActive = false;
-        gameOverText.text = success ? "You collected all mushrooms!" : "Time's up! You lost.";
+        gameOverText.text = success ? "You collected all mushrooms!" : "Time's up! You lose.";
         mushroomsCollected = 0;
         StartCoroutine(endEnable());
 

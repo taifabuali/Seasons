@@ -135,6 +135,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wooden Bow
       objectReference: {fileID: 0}
+    - target: {fileID: 1717406733745140, guid: d03c4353fda446d4f8df56d422578d64, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4620178347958848, guid: d03c4353fda446d4f8df56d422578d64, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -187,6 +191,11 @@ PrefabInstance:
 --- !u!4 &63439612 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4620178347958848, guid: d03c4353fda446d4f8df56d422578d64, type: 3}
+  m_PrefabInstance: {fileID: 63439611}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &63439613 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1717406733745140, guid: d03c4353fda446d4f8df56d422578d64, type: 3}
   m_PrefabInstance: {fileID: 63439611}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &141163197
@@ -606,8 +615,9 @@ MonoBehaviour:
   groundCheck: {fileID: 1720651304}
   groundDistance: 0.4
   groundMask:
-    serializedVersion: 2
     m_Bits: 8
+  isGrounded: 0
+  velocity: {x: 0, y: 0, z: 0}
   controller: {fileID: 705003398}
 --- !u!143 &705003398
 CharacterController:
@@ -1020,7 +1030,7 @@ MonoBehaviour:
   hintMessage:
   - There are a triplets mountains loo; near the biggest one under an apple tree
     ..
-  - Near the cross roads under a tree you can fid one ..
+  - Near the cross roads under a tree you can find one ..
   - 'Find a small valley full of red poppy.... '
   hintMessagetext: {fileID: 1077703566}
   hintPanel: {fileID: 1425484386}
@@ -1582,6 +1592,7 @@ MonoBehaviour:
   guideText: {fileID: 1317354268}
   scoreText: {fileID: 1502049951}
   _player: {fileID: 705003389}
+  bow: {fileID: 63439613}
 --- !u!1 &1317354266
 GameObject:
   m_ObjectHideFlags: 0

@@ -60,6 +60,8 @@ public class Manager : MonoBehaviour
     float timer;
     float seasonDuration = 420f;
 
+    public GameObject bow;
+
     public static Manager Instance { get; set;  }
     private void Awake()
     {
@@ -152,8 +154,8 @@ public class Manager : MonoBehaviour
                     break;
 
                 case Season.Autumn:
-                    Debug.Log("autumn");
-                  
+                    ChangeSeason(Season.Winter);
+                    bow.SetActive(false);
                     break;
 
                 case Season.Winter:
@@ -281,6 +283,7 @@ public class Manager : MonoBehaviour
         if (success)
         {
             ChangeSeason(Season.Autumn);
+            bow.SetActive(true);
             Debug.Log("Transitioning to Autumn");
         }
         else

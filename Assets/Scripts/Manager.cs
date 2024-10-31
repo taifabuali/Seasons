@@ -10,8 +10,13 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class Manager : MonoBehaviour
 {
     public enum Season { Summer, Autumn, Winter, Spring }
+    public GameObject summerGame;
+    public GameObject autumnGame;
+    //public GameObject winterGame;
+    //public GameObject Spring;
+
     public TreeManager treeManager;
-    public GameObject game;   
+
     public ParticleSystem sunParticleSystem;
     public ParticleSystem thunderParticleSystem;
     public ParticleSystem snowParticleSystem;
@@ -28,10 +33,7 @@ public class Manager : MonoBehaviour
     public Material _springSkyBox;
     public Material _winterSkyBox;
 
-   
-
-    public Season currentSeason;
-    private int switchWeather;
+   public Season currentSeason;
 
     public Material summerMaterial;
     public Material autumnMaterial;
@@ -42,19 +44,13 @@ public class Manager : MonoBehaviour
 
     public GameObject environment;
   
-    
-    TerrainCollider terrainCollider;
-
     public int score = 0;
 
     public bool _gameOver = false;
 
     public GameObject winScreen;
     public GameObject gaameOverScreen;
-    public GameObject GuidePanel;
-    float time = 5f;
-    public Text guideText;
-
+  
     public Text scoreText;
     public GameObject _player;
     float timer;
@@ -81,7 +77,6 @@ public class Manager : MonoBehaviour
     {
         
         _player = GameObject.FindGameObjectWithTag("Player");
-        terrainCollider = terrain.GetComponent<TerrainCollider>();
         treeManager.UpdateTrees(currentSeason);
 
         UpdateFrictionForSeason();
@@ -92,11 +87,6 @@ public class Manager : MonoBehaviour
 
         StartCoroutine(Weather());
         UpdateSeasonsVisuals();
-
-        StartCoroutine(GuideEnable(time));
-
-        
-
        
     }
 
@@ -151,11 +141,12 @@ public class Manager : MonoBehaviour
             switch (currentSeason)
             {
                 case Season.Summer:
+                   
                     break;
 
                 case Season.Autumn:
-                    ChangeSeason(Season.Winter);
-                    bow.SetActive(false);
+
+                    summerGame.SetActive(false);
                     break;
 
                 case Season.Winter:
@@ -265,24 +256,13 @@ public class Manager : MonoBehaviour
 
 
     }
-     IEnumerator GuideEnable(float time)
-    {
-        GuidePanel.SetActive(true);
-        yield return new WaitForSeconds(time-4);
-
-        guideText.text = "You must find them all before the time up...";
-        yield return new WaitForSeconds(time-2);
-        guideText.text = "Good Luck..!";
-        yield return new WaitForSeconds(time);
-
-        GuidePanel.SetActive(false);
-
-    }
+   
     public void OnSummerGameEnded(bool success)
     {
         if (success)
         {
             ChangeSeason(Season.Autumn);
+            autumnGame.SetActive(true);
             bow.SetActive(true);
             Debug.Log("Transitioning to Autumn");
         }
@@ -291,6 +271,21 @@ public class Manager : MonoBehaviour
            
             SummerGame.Instance.ResetGame();
             Debug.Log("Resetting Summer Game");
+        }
+    }
+    public void OnAutumnGameEnded(bool success)
+    {
+        if (success)
+        {
+            ChangeSeason(Season.Winter);
+            bow.SetActive(false);
+            Debug.Log("Transitioning to Winter");
+        }
+        else
+        {
+
+            AutumnGame.Instance.ResetGame();
+            Debug.Log("Resetting Autumn Game");
         }
     }
 

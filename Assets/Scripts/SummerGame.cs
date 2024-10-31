@@ -27,9 +27,12 @@ public class SummerGame : MonoBehaviour
 
     public int mushroomsCollected = 0;
     public float timer;
-    private bool hintShown = false;
     private bool gameActive = true;
 
+   
+    public GameObject GuidePanel;
+    public Text guideText;
+    float time = 5f;
     private void Awake()
     {
         if (Instance == null)
@@ -41,7 +44,7 @@ public class SummerGame : MonoBehaviour
             Destroy(gameObject);
         }
     }
-     void Start()
+    void Start()
     {
         timer = gameDuration;
         //hintPanel.gameObject.SetActive(false);
@@ -51,11 +54,13 @@ public class SummerGame : MonoBehaviour
         gameOverPanel.SetActive(false);
         scoreText.text = "Score: 0";
 
-        
+
         StartCoroutine(UpdateTimer());
+        StartCoroutine(GuideEnable(time));
+
 
     }
-    
+
 
 
     public void ResetGame()
@@ -63,7 +68,7 @@ public class SummerGame : MonoBehaviour
         timer = gameDuration;
         mushroomsCollected = 0;
         gameActive = true;
-        hintPanel.gameObject.SetActive(false);
+        StartCoroutine(GuideEnable(time));
         scoreText.text = "Score: 0";
         gameOverPanel.SetActive(false);
         GameObject[] mushrooms = GameObject.FindGameObjectsWithTag("Mushroom");
@@ -79,8 +84,8 @@ public class SummerGame : MonoBehaviour
     {
         while (gameActive)
         {
-            timer -= Time.deltaTime ;
-            timerText.text = "Time Left:" + Mathf.Floor(timer/60).ToString()+ " Minutes";
+            timer -= Time.deltaTime;
+            timerText.text = "Time Left:" + Mathf.Floor(timer / 60).ToString() + " Minutes";
             if (timer <= 0)
             {
                 EndGame(false);
@@ -90,14 +95,7 @@ public class SummerGame : MonoBehaviour
 
         }
     }
-    public void ShowHint(string hint)
-    {
-        hintMessage.text = hint;
-        StartCoroutine(HintEnable());
-        hintShown = true;
-        //CreateMushroom(hintShown);
-
-    }
+   
 
     public void CollectMushroom(GameObject mushroom)
     {
@@ -109,6 +107,7 @@ public class SummerGame : MonoBehaviour
         if (mushroomsCollected >= mushroomPositions.Length)
         {
             EndGame(true);
+
         }
     }
 
@@ -117,16 +116,17 @@ public class SummerGame : MonoBehaviour
         gameActive = false;
         gameOverText.text = success ? "You collected all mushrooms!" : "Time's up! You lose.";
         mushroomsCollected = 0;
+        timer = 0;
+        scoreText.text = "Score: 0 ";
         StartCoroutine(endEnable());
-
         Manager.Instance.OnSummerGameEnded(success);
 
     }
-    
+
     IEnumerator HintEnable()
     {
         hintPanel.SetActive(true);
-        
+
         yield return new WaitForSeconds(5);
         hintPanel.SetActive(false);
 
@@ -139,13 +139,17 @@ public class SummerGame : MonoBehaviour
         gameOverPanel.SetActive(false);
 
     }
-    //public void CreateMushroom(bool hint)
-    // { 
-    //if(hint)
-    //     foreach (Vector3 position in mushroomPositions)
-    //{
-    //   if (hintShown)
-    //    Instantiate(mushroomPrefab, position, Quaternion.identity);
-    // }
-    //  }
+    IEnumerator GuideEnable(float time)
+    {
+        GuidePanel.SetActive(true);
+        yield return new WaitForSeconds(time - 4);
+
+        guideText.text = "You must find them all before the time up...";
+        yield return new WaitForSeconds(time - 2);
+        guideText.text = "Good Luck..!";
+        yield return new WaitForSeconds(time);
+
+        GuidePanel.SetActive(false);
+
+    }
 }

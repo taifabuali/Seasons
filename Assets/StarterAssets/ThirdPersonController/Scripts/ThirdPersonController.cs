@@ -181,10 +181,12 @@ namespace StarterAssets
 
         public void Shoot()
         {
-            GameObject Arrow = Instantiate(arrowPrefab, ShootPoint.position, transform.rotation);
-            Arrow.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
+            GameObject Arrow = Instantiate(arrowPrefab, ShootPoint.position,Quaternion.identity);
+            Arrow.GetComponent<Rigidbody>().AddForce(ShootPoint.forward * 25f, ForceMode.Impulse);
 
         }
+      
+
         private void LateUpdate()
         {
             CameraRotation();

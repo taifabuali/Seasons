@@ -5,8 +5,6 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class Target : MonoBehaviour
 {
-    public float score = 0;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +20,7 @@ public class Target : MonoBehaviour
     {
         if (other.CompareTag("Arrow"))
         {
-            score += 100;
+            AutumnGame.Instance.GetPoint();
             Destroy(other.gameObject);
         }
     }

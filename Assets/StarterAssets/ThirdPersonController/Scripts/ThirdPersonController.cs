@@ -1,4 +1,5 @@
-﻿ using UnityEngine;
+﻿using Cinemachine;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -112,6 +113,9 @@ namespace StarterAssets
 
         public GameObject arrowPrefab;
         public Transform ShootPoint;
+        public GameObject aimingCamera;
+        public GameObject playerCamera;
+
         private bool IsCurrentDeviceMouse
         {
             get
@@ -170,19 +174,24 @@ namespace StarterAssets
             {
                 _animator.SetBool("Aiming", _input.isAiming);
                 _animator.SetBool("Shooting", _input.isShooting);
+                aimingCamera.SetActive(true);
+                playerCamera.SetActive(false);
+
             }
             else
             {
                 _animator.SetBool("Aiming",false);
                 _animator.SetBool("Shooting", false);
 
+                aimingCamera.SetActive(false);
+                playerCamera.SetActive(true);
             }
         }
 
         public void Shoot()
         {
-            GameObject Arrow = Instantiate(arrowPrefab, ShootPoint.position,Quaternion.identity);
-            Arrow.GetComponent<Rigidbody>().AddForce(ShootPoint.forward * 25f, ForceMode.Impulse);
+            GameObject Arrow = Instantiate(arrowPrefab, ShootPoint.position, ShootPoint.rotation);
+            Arrow.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
 
         }
       

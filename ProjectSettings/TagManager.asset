@@ -7,6 +7,8 @@ TagManager:
   - trees
   - CinemachineTarget
   - Mushroom
+  - Target
+  - Arrow
   layers:
   - Default
   - TransparentFX

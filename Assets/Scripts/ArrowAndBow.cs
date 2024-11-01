@@ -14,7 +14,6 @@ public class ArrowAndBow : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         
-            Destroy(gameObject);
         
     }
 

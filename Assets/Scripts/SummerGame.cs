@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SummerGame : MonoBehaviour
+public class SummerGame : MonoBehaviour, IGameCycle
 {
     public static SummerGame Instance;
 
@@ -97,10 +97,8 @@ public class SummerGame : MonoBehaviour
     }
    
 
-    public void CollectMushroom(GameObject mushroom)
+    public void GetPoint()
     {
-        Destroy(mushroom);
-
         mushroomsCollected++;
         scoreText.text = "Score: " + mushroomsCollected;
 
@@ -119,7 +117,7 @@ public class SummerGame : MonoBehaviour
         timer = 0;
         scoreText.text = "Score: 0 ";
         StartCoroutine(endEnable());
-        Manager.Instance.OnSummerGameEnded(success);
+        Manager.Instance.OnGameEnded(success,Manager.Season.Summer,Manager.Season.Autumn,Manager.Instance.autumnGameObject);
 
     }
 

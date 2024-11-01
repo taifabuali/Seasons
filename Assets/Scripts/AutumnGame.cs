@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
-public class AutumnGame : MonoBehaviour
+public class AutumnGame : MonoBehaviour,IGameCycle
 {
     public static AutumnGame Instance;
 
@@ -94,11 +94,11 @@ public class AutumnGame : MonoBehaviour
         gameOverText.text = success ? "Great you got the target points!" : "Time's up! You lose.";
         StartCoroutine(endEnable());
 
-        Manager.Instance.OnAutumnGameEnded(success);
+        Manager.Instance.OnGameEnded(success,Manager.Season.Autumn, Manager.Season.Winter,Manager.Instance.winterGameObject);
 
     }
 
-   
+
     IEnumerator endEnable()
     {
         gameOverPanel.SetActive(true);
@@ -109,8 +109,9 @@ public class AutumnGame : MonoBehaviour
     }
    public IEnumerator GuideEnable(float time)
     {
-        yield return new WaitForSeconds(time - 2);
         guideText.text = "Now Roben Hood show me your talent in archery...";
+        yield return new WaitForSeconds(time - 2);
+        
         GuidePanel.SetActive(true);
         yield return new WaitForSeconds(time - 4);
 

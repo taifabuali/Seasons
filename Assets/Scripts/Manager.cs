@@ -7,13 +7,13 @@ using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class Manager : MonoBehaviour
+public class Manager : MonoBehaviour, IGameManager
 {
     public enum Season { Summer, Autumn, Winter, Spring }
-    public GameObject summerGame;
-    public GameObject autumnGame;
-    //public GameObject winterGame;
-    //public GameObject Spring;
+    public GameObject summerGameObject;
+    public GameObject autumnGameObject;
+    public GameObject winterGameObject;
+    public GameObject springGameObject;
 
     public TreeManager treeManager;
 
@@ -146,7 +146,7 @@ public class Manager : MonoBehaviour
 
                 case Season.Autumn:
 
-                    summerGame.SetActive(false);
+                    summerGameObject.SetActive(false);
                     break;
 
                 case Season.Winter:
@@ -230,7 +230,7 @@ public class Manager : MonoBehaviour
     }
     public void CheckWinCondition()
     {
-        if(score>=3)
+        if(score>=4)
         {
             Win();
         }
@@ -256,38 +256,40 @@ public class Manager : MonoBehaviour
 
 
     }
+    public void OnGameEnded(bool success, Season currentSason, Season nextSeason, GameObject nextGame)
+    {
+        if (success)
+        {
+            ChangeSeason(nextSeason);
+            if (nextGame != null)
+            {
+                nextGame.SetActive(true);
+
+            }
+            Debug.Log($"Transitioning to{nextSeason}");
+        }else
+        {
+            ResetCurrentGame(currentSason);
+            Debug.Log($"Resetig {nextSeason} Game");
+
+
+        }
+    }
+    void ResetCurrentGame(Season season)
+    {
+        switch(season)
+        {
+            case Season.Summer:
+                SummerGame.Instance.ResetGame();
+                break;
+            case Season.Autumn:
+                AutumnGame.Instance.ResetGame();
+                break;
+
+
+        }
+
+    }
    
-    public void OnSummerGameEnded(bool success)
-    {
-        if (success)
-        {
-            ChangeSeason(Season.Autumn);
-            autumnGame.SetActive(true);
-            bow.SetActive(true);
-            Debug.Log("Transitioning to Autumn");
-        }
-        else
-        {
-           
-            SummerGame.Instance.ResetGame();
-            Debug.Log("Resetting Summer Game");
-        }
-    }
-    public void OnAutumnGameEnded(bool success)
-    {
-        if (success)
-        {
-            ChangeSeason(Season.Winter);
-            bow.SetActive(false);
-            Debug.Log("Transitioning to Winter");
-        }
-        else
-        {
-
-            AutumnGame.Instance.ResetGame();
-            Debug.Log("Resetting Autumn Game");
-        }
-    }
-
 
 }

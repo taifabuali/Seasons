@@ -6,10 +6,10 @@ using UnityEngine.SocialPlatforms.Impl;
 public class Target : MonoBehaviour
 {
     // Start is called before the first frame update
-  
-    private void OnTriggerEnter(Collider other)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Arrow"))
+        if (collision.gameObject.tag == ("Arrow"))
         {
             AutumnGame.Instance.GetPoint();
         }

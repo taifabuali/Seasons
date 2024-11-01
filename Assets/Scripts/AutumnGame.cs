@@ -24,6 +24,8 @@ public class AutumnGame : MonoBehaviour,IGameCycle
     public GameObject GuidePanel;
     public Text guideText;
     float time = 5f;
+    public GameObject target;
+
 
     private void Awake()
     {
@@ -40,7 +42,7 @@ public class AutumnGame : MonoBehaviour,IGameCycle
     {
         timer = gameDuration;
         gameActive = true;
-
+        target.SetActive(true);
         gameOverPanel.SetActive(false);
         scoreText.text = "Score: 0";
        
@@ -66,6 +68,7 @@ public class AutumnGame : MonoBehaviour,IGameCycle
     {
         timer = gameDuration;
         gameActive = true;
+        target.SetActive(true);    
         scoreText.text = "Score: 0";
         gameOverPanel.SetActive(false);
         StartCoroutine(GuideEnable(time));
@@ -93,7 +96,7 @@ public class AutumnGame : MonoBehaviour,IGameCycle
         gameActive = false;
         gameOverText.text = success ? "Great you got the target points!" : "Time's up! You lose.";
         StartCoroutine(endEnable());
-
+        target.SetActive(false);
         Manager.Instance.OnGameEnded(success,Manager.Season.Autumn, Manager.Season.Winter,Manager.Instance.winterGameObject);
 
     }

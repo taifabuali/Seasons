@@ -14,7 +14,7 @@ public class ArrowAndBow : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         
-        
+        Destroy(transform.GetComponent<Rigidbody>());
     }
 
 

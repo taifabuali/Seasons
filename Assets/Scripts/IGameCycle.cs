@@ -6,7 +6,7 @@ public interface IGameCycle
 {
     void EndGame(bool success);
     void ResetGame();
-    void GetPoint();
+    void GetPoint(int points);
 
 
 

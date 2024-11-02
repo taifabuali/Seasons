@@ -56,7 +56,6 @@ public class Manager : MonoBehaviour, IGameManager
     float timer;
     float seasonDuration = 420f;
 
-    public GameObject bow;
 
     public static Manager Instance { get; set;  }
     private void Awake()
@@ -75,8 +74,8 @@ public class Manager : MonoBehaviour, IGameManager
     // Start is called before the first frame update
     void Start()
     {
-        
-        _player = GameObject.FindGameObjectWithTag("Player");
+
+        _player = Player.Instance.gameObject;
         treeManager.UpdateTrees(currentSeason);
 
         UpdateFrictionForSeason();
@@ -92,14 +91,12 @@ public class Manager : MonoBehaviour, IGameManager
 
     public void ChangeSeason(Season newSeason)
     {
-   
-
-            currentSeason = newSeason;
-            UpdateSeasonsVisuals();
-            UpdateSkyBox();
-            UpdateFrictionForSeason();
-            treeManager.UpdateTrees(currentSeason);
-           StartCoroutine(SeasonTimer());
+        currentSeason = newSeason;
+        UpdateSeasonsVisuals();
+        UpdateSkyBox();
+        UpdateFrictionForSeason();
+        treeManager.UpdateTrees(currentSeason);
+        StartCoroutine(SeasonTimer());
         PlayerSeasonsMovement playerMovement = _player.GetComponent<PlayerSeasonsMovement>();
         if (playerMovement != null)
         {
@@ -119,7 +116,9 @@ public class Manager : MonoBehaviour, IGameManager
                 terrain.terrainData.terrainLayers = _summerTerrainLayer;
                 break;
             case Season.Autumn:
+                Manager.Instance._player.transform.position = autumnGameObject.transform.position;
                 terrain.terrainData.terrainLayers = _autumnTerrainLayer;
+
                 break;
             case Season.Winter:
                 terrain.terrainData.terrainLayers = _winterTerrainLayer;
@@ -150,7 +149,8 @@ public class Manager : MonoBehaviour, IGameManager
                     break;
 
                 case Season.Winter:
-                    ChangeSeason(Season.Spring);
+                    autumnGameObject.SetActive(false);
+
                     break;
 
                 case Season.Spring:
@@ -258,13 +258,14 @@ public class Manager : MonoBehaviour, IGameManager
     }
     public void OnGameEnded(bool success, Season currentSason, Season nextSeason, GameObject nextGame)
     {
+
         if (success)
         {
             ChangeSeason(nextSeason);
             if (nextGame != null)
             {
                 nextGame.SetActive(true);
-
+                
             }
             Debug.Log($"Transitioning to{nextSeason}");
         }else
@@ -285,7 +286,9 @@ public class Manager : MonoBehaviour, IGameManager
             case Season.Autumn:
                 AutumnGame.Instance.ResetGame();
                 break;
-
+            case Season.Winter:
+                WinterGame.Instance.ResetGame();
+                break;
 
         }
 

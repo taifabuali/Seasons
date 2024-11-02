@@ -12,7 +12,7 @@ public class Mushroom : MonoBehaviour
         if(other.CompareTag("Player"))
         {
 
-            SummerGame.Instance.GetPoint();
+            SummerGame.Instance.GetPoint(scoreValue);
             Destroy(gameObject);
         }
     }

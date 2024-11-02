@@ -35,7 +35,7 @@ public class HintBoard : MonoBehaviour
     {
         hintPanel.SetActive(true);
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(7);
         hintPanel.SetActive(false);
 
     }
@@ -48,6 +48,7 @@ public class HintBoard : MonoBehaviour
                 
                 if(!hintSet.Contains(i))
                 {
+
                     ShowHint(hintMessage[i]);
 
                     if (mushroomTransform.Length > i)

@@ -5,6 +5,9 @@ using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using StarterAssets;
+using UnityEngine.Windows;
 
 public class SummerGame : MonoBehaviour, IGameCycle
 {
@@ -29,10 +32,10 @@ public class SummerGame : MonoBehaviour, IGameCycle
     public float timer;
     private bool gameActive = true;
 
-   
+
     public GameObject GuidePanel;
     public Text guideText;
-    float time = 5f;
+    float time = 10f;
     private void Awake()
     {
         if (Instance == null)
@@ -46,6 +49,8 @@ public class SummerGame : MonoBehaviour, IGameCycle
     }
     void Start()
     {
+        
+
         timer = gameDuration;
         //hintPanel.gameObject.SetActive(false);
         mushroomsCollected = 0;
@@ -55,9 +60,10 @@ public class SummerGame : MonoBehaviour, IGameCycle
         scoreText.text = "Score: 0";
 
 
-        StartCoroutine(UpdateTimer());
-        StartCoroutine(GuideEnable(time));
-
+       
+       
+            StartCoroutine(GuideEnable(time));
+        
 
     }
 
@@ -97,9 +103,9 @@ public class SummerGame : MonoBehaviour, IGameCycle
     }
    
 
-    public void GetPoint()
+    public void GetPoint(int points)
     {
-        mushroomsCollected++;
+        mushroomsCollected+= points;
         scoreText.text = "Score: " + mushroomsCollected;
 
         if (mushroomsCollected >= mushroomPositions.Length)
@@ -139,15 +145,17 @@ public class SummerGame : MonoBehaviour, IGameCycle
     }
     IEnumerator GuideEnable(float time)
     {
-        GuidePanel.SetActive(true);
-        yield return new WaitForSeconds(time - 4);
+       
+            GuidePanel.SetActive(true);
+            yield return new WaitForSeconds(time - 4);
 
-        guideText.text = "You must find them all before the time up...";
-        yield return new WaitForSeconds(time - 2);
-        guideText.text = "Good Luck..!";
-        yield return new WaitForSeconds(time);
+            guideText.text = "You must find them all before the time up...";
+            yield return new WaitForSeconds(time - 2);
+            guideText.text = "Good Luck..!";
+            yield return new WaitForSeconds(time);
 
-        GuidePanel.SetActive(false);
+            GuidePanel.SetActive(false);
+        StartCoroutine(UpdateTimer());
 
     }
 }

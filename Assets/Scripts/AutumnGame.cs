@@ -23,8 +23,9 @@ public class AutumnGame : MonoBehaviour,IGameCycle
 
     public GameObject GuidePanel;
     public Text guideText;
-    float time = 5f;
+    float time = 10f;
     public GameObject target;
+    public GameObject bow;
 
 
     private void Awake()
@@ -40,9 +41,11 @@ public class AutumnGame : MonoBehaviour,IGameCycle
     }
     void Start()
     {
+        
         timer = gameDuration;
         gameActive = true;
         target.SetActive(true);
+        bow.SetActive(true);    
         gameOverPanel.SetActive(false);
         scoreText.text = "Score: 0";
        
@@ -52,10 +55,10 @@ public class AutumnGame : MonoBehaviour,IGameCycle
 
     }
    
-    public void GetPoint()
+    public void GetPoint(int points)
     {
 
-        score += 50;
+        score += points;
         scoreText.text = "Score: " + score;
 
         if (score >= 300)

@@ -10,6 +10,19 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class Manager : MonoBehaviour, IGameManager
 {
     public enum Season { Summer, Autumn, Winter, Spring }
+    public Season currentSeason;
+    public GameObject environment;
+
+    public int score = 0;
+
+    public bool _gameOver = false;
+    public GameObject _player;
+    float timer;
+    float seasonDuration = 420f;
+
+
+    [Header("Season Game Objects")]
+
     public GameObject summerGameObject;
     public GameObject autumnGameObject;
     public GameObject winterGameObject;
@@ -17,10 +30,12 @@ public class Manager : MonoBehaviour, IGameManager
 
     public TreeManager treeManager;
 
+    [Header("ParticleSystem")]
     public ParticleSystem sunParticleSystem;
     public ParticleSystem thunderParticleSystem;
     public ParticleSystem snowParticleSystem;
 
+    [Header("TerrainLayer")]
     public TerrainLayer[] _summerTerrainLayer;
     public TerrainLayer[] _autumnTerrainLayer;
     public TerrainLayer[] _springTerrainLayer;
@@ -28,34 +43,29 @@ public class Manager : MonoBehaviour, IGameManager
 
     public Terrain terrain;
 
+    [Header("Sky Box Material")]
     public Material _summerSkyBox;
     public Material _autumnSkyBox;
     public Material _springSkyBox;
     public Material _winterSkyBox;
 
-   public Season currentSeason;
 
+    [Header("Material")]
     public Material summerMaterial;
     public Material autumnMaterial;
     public Material winterMaterial;
     public Material springMaterial;
 
+    [Header("PhysicMaterial")]
     public PhysicMaterial seasonalPhysicMaterial;
 
-    public GameObject environment;
-  
-    public int score = 0;
-
-    public bool _gameOver = false;
-
+   
+    [Header("UI")]
     public GameObject winScreen;
     public GameObject gaameOverScreen;
-  
     public Text scoreText;
-    public GameObject _player;
-    float timer;
-    float seasonDuration = 420f;
 
+    
 
     public static Manager Instance { get; set;  }
     private void Awake()
@@ -116,7 +126,6 @@ public class Manager : MonoBehaviour, IGameManager
                 terrain.terrainData.terrainLayers = _summerTerrainLayer;
                 break;
             case Season.Autumn:
-                Manager.Instance._player.transform.position = autumnGameObject.transform.position;
                 terrain.terrainData.terrainLayers = _autumnTerrainLayer;
 
                 break;

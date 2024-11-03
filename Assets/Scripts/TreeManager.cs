@@ -7,6 +7,7 @@ using static Manager;
 public class TreeManager : MonoBehaviour
 {
     public Terrain terrain;  // Reference to the Terrain
+    [Header("Tree Prefab")]
     public GameObject[] summerTreePrefab;
     public GameObject winterTreePrefab;
     public GameObject autumnTreePrefab;

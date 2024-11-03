@@ -12,30 +12,34 @@ using UnityEngine.Windows;
 public class SummerGame : MonoBehaviour, IGameCycle
 {
     public static SummerGame Instance;
-
+    [Header("Mushroom")]
     public GameObject mushroomPrefab;
     public Vector3[] mushroomPositions;
+    public int mushroomsCollected = 0;
 
+
+    [Header("UI")]
     public GameObject hintBoard;
     public Text hintMessage;
     public GameObject hintPanel;
 
     public GameObject gameOverPanel;
     public Text gameOverText;
-
+    
     public Text timerText;
     public Text scoreText;
 
-    public float gameDuration = 420f;
-
-    public int mushroomsCollected = 0;
-    public float timer;
-    private bool gameActive = true;
-
-
     public GameObject GuidePanel;
     public Text guideText;
+
+    public Button guideButton;
+
+    public float gameDuration = 420f;
+
+    public float timer;
+    private bool gameActive = true;
     float time = 10f;
+
     private void Awake()
     {
         if (Instance == null)
@@ -60,10 +64,11 @@ public class SummerGame : MonoBehaviour, IGameCycle
         scoreText.text = "Score: 0";
 
 
-       
-       
-            StartCoroutine(GuideEnable(time));
-        
+
+        if (guideButton != null)
+        {
+         guideButton.onClick.AddListener(() =>   StartCoroutine(GuideEnable(time)));
+        }
 
     }
 
@@ -103,6 +108,7 @@ public class SummerGame : MonoBehaviour, IGameCycle
     }
    
 
+
     public void GetPoint(int points)
     {
         mushroomsCollected+= points;
@@ -124,6 +130,7 @@ public class SummerGame : MonoBehaviour, IGameCycle
         scoreText.text = "Score: 0 ";
         StartCoroutine(endEnable());
         Manager.Instance.OnGameEnded(success,Manager.Season.Summer,Manager.Season.Autumn,Manager.Instance.autumnGameObject);
+        Manager.Instance._player.transform.position = Manager.Instance.autumnGameObject.transform.position;
 
     }
 
@@ -143,19 +150,26 @@ public class SummerGame : MonoBehaviour, IGameCycle
         gameOverPanel.SetActive(false);
 
     }
-    IEnumerator GuideEnable(float time)
+    public void GetGuideByButoon()
     {
-       
-            GuidePanel.SetActive(true);
-            yield return new WaitForSeconds(time - 4);
+        StartCoroutine(GuideEnable(0));
+    }
+    IEnumerator GuideEnable(float initialtime)
+    {
 
-            guideText.text = "You must find them all before the time up...";
-            yield return new WaitForSeconds(time - 2);
-            guideText.text = "Good Luck..!";
-            yield return new WaitForSeconds(time);
+        GuidePanel.SetActive(true);
+        yield return new WaitForSeconds(initialtime);
 
-            GuidePanel.SetActive(false);
-        StartCoroutine(UpdateTimer());
-
+        string[] message =
+        { 
+           "Go tothe blue hint board to get hint about mushrrom places...","You must find them all before the time up...", "Good Luck..!"
+        };
+        float[] messageDuration = { 3, 4, 2 };
+        for (int i = 0; i < message.Length; i++)
+        {
+            guideText.text = message[i];
+            yield return new WaitForSeconds(messageDuration[i]);
+        }
+        GuidePanel.SetActive(false);
     }
 }

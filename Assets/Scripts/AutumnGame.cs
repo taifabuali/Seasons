@@ -9,25 +9,25 @@ public class AutumnGame : MonoBehaviour,IGameCycle
 {
     public static AutumnGame Instance;
 
+    float time = 10f;
+    int score = 0;
+    public float gameDuration = 420f;
+    private bool gameActive = true;
+    public float timer;
+
+    [Header("UI")]
     public GameObject gameOverPanel;
     public Text gameOverText;
 
     public Text timerText;
     public Text scoreText;
-    int score = 0;  
-
-    public float gameDuration = 420f;
-
-    public float timer;
-    private bool gameActive = true;
-
+ 
     public GameObject GuidePanel;
     public Text guideText;
-    float time = 10f;
+    public Button guideButton;
+
     public GameObject target;
     public GameObject bow;
-
-
     private void Awake()
     {
         if (Instance == null)
@@ -38,6 +38,8 @@ public class AutumnGame : MonoBehaviour,IGameCycle
         {
             Destroy(gameObject);
         }
+        guideButton.gameObject.SetActive(true);
+
     }
     void Start()
     {
@@ -49,12 +51,17 @@ public class AutumnGame : MonoBehaviour,IGameCycle
         gameOverPanel.SetActive(false);
         scoreText.text = "Score: 0";
        
-        StartCoroutine(GuideEnable(time));
 
         StartCoroutine(UpdateTimer());
 
+        if (guideButton != null)
+        {
+            guideButton.onClick.AddListener(() => StartCoroutine(GuideEnable(0)));
+        }
+
+
     }
-   
+
     public void GetPoint(int points)
     {
 
@@ -100,6 +107,7 @@ public class AutumnGame : MonoBehaviour,IGameCycle
         gameOverText.text = success ? "Great you got the target points!" : "Time's up! You lose.";
         StartCoroutine(endEnable());
         target.SetActive(false);
+        bow.SetActive(false);
         Manager.Instance.OnGameEnded(success,Manager.Season.Autumn, Manager.Season.Winter,Manager.Instance.winterGameObject);
 
     }
@@ -113,21 +121,30 @@ public class AutumnGame : MonoBehaviour,IGameCycle
         gameOverPanel.SetActive(false);
 
     }
-   public IEnumerator GuideEnable(float time)
+    public void GetGuideByButoon()
     {
-        guideText.text = "Now Roben Hood show me your talent in archery...";
-        yield return new WaitForSeconds(time - 2);
+      
+            StartCoroutine(GuideEnable(0));
         
-        GuidePanel.SetActive(true);
-        yield return new WaitForSeconds(time - 4);
-
-        guideText.text = "Make 300 points to win this game so the winter come...";
-        yield return new WaitForSeconds(time - 2);
-        guideText.text = "Good Luck..!";
-        yield return new WaitForSeconds(time);
-
-        GuidePanel.SetActive(false);
-
     }
+    IEnumerator GuideEnable(float initialtime)
+    {
+
+        GuidePanel.SetActive(true);
+        yield return new WaitForSeconds(initialtime);
+
+        string[] message =
+        {
+          "Now Roben Hood show me your talent in archery...","Make 300 points to win this game so the winter come...", "Good Luck..!"
+        };
+        float[] messageDuration = { 3, 4, 2 };
+        for (int i = 0; i < message.Length; i++)
+        {
+            guideText.text = message[i];
+            yield return new WaitForSeconds(messageDuration[i]);
+        }
+        GuidePanel.SetActive(false);
+    }
+   
    
 }

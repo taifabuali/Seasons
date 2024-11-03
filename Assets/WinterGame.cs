@@ -7,21 +7,21 @@ public class WinterGame : MonoBehaviour,IGameCycle
 {
   public static WinterGame Instance;
 
-    public GameObject gameOverPanel;
-    public Text gameOverText;
-
-    public Text timerText;
-    public Text scoreText;
     int score = 0;
-
     public float gameDuration = 420f;
-
     public float timer;
     private bool gameActive = true;
+    float time = 5f;
 
+    [Header("UI")]
+    public GameObject gameOverPanel;
+    public Text gameOverText;
+    public Text timerText;
+    public Text scoreText;
     public GameObject GuidePanel;
     public Text guideText;
-    float time = 5f;
+
+   
 
     private void Awake()
     {

@@ -207,20 +207,20 @@ namespace StarterAssets
             movementLooked = false;
         }
 
-        public void Shoot()
-        {
-            GameObject arrow = Instantiate(arrowPrefab, ShootPoint.position, ShootPoint.rotation);
+       // public void Shoot()
+        //{
+          //  GameObject arrow = Instantiate(arrowPrefab, ShootPoint.position, ShootPoint.rotation);
 
             // Calculate the direction to the target
-            Vector3 targetDirection = (target.transform.position - ShootPoint.position).normalized;
+            //Vector3 targetDirection = (target.transform.position - ShootPoint.position).normalized;
 
             // Create a force vector with an upward component for a better trajectory
-            Quaternion rotation = Quaternion.Euler(upwardAngle, 0, 0);
-            Vector3 shootDirection = rotation * targetDirection; // Rotate the target direction upwards
+            //Quaternion rotation = Quaternion.Euler(upwardAngle, 0, 0);
+            //Vector3 shootDirection = rotation * targetDirection; // Rotate the target direction upwards
 
             // Adjust the shooting force
-            arrow.GetComponent<Rigidbody>().AddForce(shootDirection * forceMagnitude, ForceMode.Impulse);
-        }
+//            arrow.GetComponent<Rigidbody>().AddForce(shootDirection * forceMagnitude, ForceMode.Impulse);
+ //       }
 
 
 

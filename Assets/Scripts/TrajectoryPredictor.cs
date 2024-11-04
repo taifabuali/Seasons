@@ -17,6 +17,8 @@ public class TrajectoryPredictor : MonoBehaviour
 
         lineRenderer.positionCount = predictionSteps;
         lineRenderer.enabled = false;
+        lineRenderer.startWidth = 0.01f;
+        lineRenderer.endWidth = 0f;
     }
 
     public void PredictTrajectory(ProjectileProperties properties)

@@ -21,8 +21,8 @@ public class ArrowShooter : MonoBehaviour
 
     [SerializeField]
     GameObject player;
-    private ThirdPersonController thirdPersonController; 
-
+    private ThirdPersonController thirdPersonController;
+    public bool HasShoot = false;
     void Start()
     {
         trajectoryPredictor = GetComponent<TrajectoryPredictor>();
@@ -31,26 +31,26 @@ public class ArrowShooter : MonoBehaviour
 
     void Update()
     {
-        if (thirdPersonController != null && thirdPersonController._input != null)
+        if (thirdPersonController._input.isAiming)
         {
-            var input = thirdPersonController._input as StarterAssetsInputs; 
-            if (input != null)
+            Predict();
+            if (thirdPersonController._input.isShooting && !HasShoot)
             {
-                if (input.isAiming)
-                {
-                    Predict();
-                    if (input.isShooting)
-                    {
-                        ShootArrow();
-                    }
-                }
+                ShootArrow();
+                HasShoot = true;
             }
         }
-    
-        else
-        {
-            trajectoryPredictor.SetTrajectoryVisible(false);
+     else
+      {
+           trajectoryPredictor.SetTrajectoryVisible(false);
         }
+
+        if (!thirdPersonController._input.isShooting)
+        {
+            HasShoot = false;
+        }
+
+
     }
 
     void Predict()
@@ -63,7 +63,7 @@ public class ArrowShooter : MonoBehaviour
         ProjectileProperties properties = new ProjectileProperties();
         Rigidbody r = arrowPrefab.GetComponent<Rigidbody>();
 
-        properties.direction = bowPosition.forward;
+        properties.direction = bowPosition.up;
         properties.initialPosition = bowPosition.position;
         properties.initialSpeed = shootingForce;
         properties.mass = r.mass;
@@ -72,9 +72,9 @@ public class ArrowShooter : MonoBehaviour
         return properties;
     }
 
-    void ShootArrow()
+    public void ShootArrow()
     {
-        Rigidbody arrowInstance = Instantiate(arrowPrefab, bowPosition.position, Quaternion.identity);
-        arrowInstance.AddForce(bowPosition.forward * shootingForce, ForceMode.Impulse);
+        Rigidbody arrowInstance = Instantiate(arrowPrefab, bowPosition.position, bowPosition.rotation);
+        arrowInstance.AddForce(bowPosition.up * shootingForce, ForceMode.Impulse);
     }
 }

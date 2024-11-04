@@ -12,6 +12,7 @@ using UnityEngine.Windows;
 public class SummerGame : MonoBehaviour, IGameCycle
 {
     public static SummerGame Instance;
+    public bool IsActive { get; private set; }
     [Header("Mushroom")]
     public GameObject mushroomPrefab;
     public Vector3[] mushroomPositions;
@@ -29,16 +30,9 @@ public class SummerGame : MonoBehaviour, IGameCycle
     public Text timerText;
     public Text scoreText;
 
-    public GameObject GuidePanel;
-    public Text guideText;
-
-    public Button guideButton;
-
     public float gameDuration = 420f;
-
     public float timer;
     private bool gameActive = true;
-    float time = 10f;
 
     private void Awake()
     {
@@ -63,15 +57,10 @@ public class SummerGame : MonoBehaviour, IGameCycle
         gameOverPanel.SetActive(false);
         scoreText.text = "Score: 0";
 
-
-
-        if (guideButton != null)
-        {
-         guideButton.onClick.AddListener(() =>   StartCoroutine(GuideEnable(time)));
-        }
-
+        IsActive = true; // Mark this game as active
+        GuideManager.Instance.guideButton.gameObject.SetActive(true); // Show guide button
+        StartCoroutine(UpdateTimer());
     }
-
 
 
     public void ResetGame()
@@ -79,7 +68,6 @@ public class SummerGame : MonoBehaviour, IGameCycle
         timer = gameDuration;
         mushroomsCollected = 0;
         gameActive = true;
-        StartCoroutine(GuideEnable(time));
         scoreText.text = "Score: 0";
         gameOverPanel.SetActive(false);
         GameObject[] mushrooms = GameObject.FindGameObjectsWithTag("Mushroom");
@@ -111,7 +99,7 @@ public class SummerGame : MonoBehaviour, IGameCycle
 
     public void GetPoint(int points)
     {
-        mushroomsCollected+= points;
+        mushroomsCollected += points;
         scoreText.text = "Score: " + mushroomsCollected;
 
         if (mushroomsCollected >= mushroomPositions.Length)
@@ -128,9 +116,10 @@ public class SummerGame : MonoBehaviour, IGameCycle
         mushroomsCollected = 0;
         timer = 0;
         scoreText.text = "Score: 0 ";
+        IsActive = false; // Mark this game as inactive
+        GuideManager.Instance.guideButton.gameObject.SetActive(false);
         StartCoroutine(endEnable());
         Manager.Instance.OnGameEnded(success,Manager.Season.Summer,Manager.Season.Autumn,Manager.Instance.autumnGameObject);
-        Manager.Instance._player.transform.position = Manager.Instance.autumnGameObject.transform.position;
 
     }
 
@@ -150,26 +139,5 @@ public class SummerGame : MonoBehaviour, IGameCycle
         gameOverPanel.SetActive(false);
 
     }
-    public void GetGuideByButoon()
-    {
-        StartCoroutine(GuideEnable(0));
-    }
-    IEnumerator GuideEnable(float initialtime)
-    {
-
-        GuidePanel.SetActive(true);
-        yield return new WaitForSeconds(initialtime);
-
-        string[] message =
-        { 
-           "Go tothe blue hint board to get hint about mushrrom places...","You must find them all before the time up...", "Good Luck..!"
-        };
-        float[] messageDuration = { 3, 4, 2 };
-        for (int i = 0; i < message.Length; i++)
-        {
-            guideText.text = message[i];
-            yield return new WaitForSeconds(messageDuration[i]);
-        }
-        GuidePanel.SetActive(false);
-    }
+    
 }

@@ -14,8 +14,7 @@ namespace StarterAssets
 		public bool sprint;
         public bool isAiming;
         public bool isShooting;
-		public bool isGuide;
-
+       
         [Header("Movement Settings")]
 		public bool analogMovement;
 
@@ -54,10 +53,7 @@ namespace StarterAssets
         {
             isShooting = value.isPressed;
         }
-        public void OnGuide(InputValue value)
-        {
-            isGuide = value.isPressed;
-        }
+      
 #endif
 
 

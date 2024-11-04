@@ -100,11 +100,11 @@ namespace StarterAssets
         private int _animIDMotionSpeed;
 
 #if ENABLE_INPUT_SYSTEM 
-        private PlayerInput _playerInput;
+        public PlayerInput _playerInput;
 #endif
         private Animator _animator;
         private CharacterController _controller;
-        private StarterAssetsInputs _input;
+        public StarterAssetsInputs _input;
         private GameObject _mainCamera;
 
         private const float _threshold = 0.01f;
@@ -115,7 +115,15 @@ namespace StarterAssets
         public Transform ShootPoint;
         public GameObject aimingCamera;
         public GameObject playerCamera;
+        public GameObject target;
 
+        [SerializeField]
+        float upwardAngle = 30f;
+
+        [SerializeField]
+        float forceMagnitude = 25f;
+
+        bool movementLooked;
         private bool IsCurrentDeviceMouse
         {
             get
@@ -128,6 +136,7 @@ namespace StarterAssets
             }
         }
 
+        public object Input { get; internal set; }
 
         private void Awake()
         {
@@ -141,7 +150,7 @@ namespace StarterAssets
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -166,6 +175,8 @@ namespace StarterAssets
             GroundedCheck();
             Move();
             AimShoot();
+            if (movementLooked)
+                return;
 
         }
         private void AimShoot()
@@ -180,21 +191,38 @@ namespace StarterAssets
             }
             else
             {
-                _animator.SetBool("Aiming",false);
+                _animator.SetBool("Aiming", false);
                 _animator.SetBool("Shooting", false);
 
                 aimingCamera.SetActive(false);
                 playerCamera.SetActive(true);
             }
         }
-       
+        public void LockMovement()
+        {
+            movementLooked = true;
+        }
+        public void UnlockMovement()
+        {
+            movementLooked = false;
+        }
+
         public void Shoot()
         {
-            GameObject Arrow = Instantiate(arrowPrefab, ShootPoint.position, ShootPoint.rotation);
-            Arrow.GetComponent<Rigidbody>().AddForce(transform.forward * 25f, ForceMode.Impulse);
+            GameObject arrow = Instantiate(arrowPrefab, ShootPoint.position, ShootPoint.rotation);
 
+            // Calculate the direction to the target
+            Vector3 targetDirection = (target.transform.position - ShootPoint.position).normalized;
+
+            // Create a force vector with an upward component for a better trajectory
+            Quaternion rotation = Quaternion.Euler(upwardAngle, 0, 0);
+            Vector3 shootDirection = rotation * targetDirection; // Rotate the target direction upwards
+
+            // Adjust the shooting force
+            arrow.GetComponent<Rigidbody>().AddForce(shootDirection * forceMagnitude, ForceMode.Impulse);
         }
-      
+
+
 
         private void LateUpdate()
         {
@@ -424,4 +452,5 @@ namespace StarterAssets
             }
         }
     }
+    
 }

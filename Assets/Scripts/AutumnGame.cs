@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class AutumnGame : MonoBehaviour,IGameCycle
 {
     public static AutumnGame Instance;
-
-    float time = 10f;
+    public bool IsActive { get; private set; }
+    public GameObject player;
     int score = 0;
     public float gameDuration = 420f;
     private bool gameActive = true;
@@ -22,9 +22,6 @@ public class AutumnGame : MonoBehaviour,IGameCycle
     public Text timerText;
     public Text scoreText;
  
-    public GameObject GuidePanel;
-    public Text guideText;
-    public Button guideButton;
 
     public GameObject target;
     public GameObject bow;
@@ -38,7 +35,6 @@ public class AutumnGame : MonoBehaviour,IGameCycle
         {
             Destroy(gameObject);
         }
-        guideButton.gameObject.SetActive(true);
 
     }
     void Start()
@@ -50,18 +46,20 @@ public class AutumnGame : MonoBehaviour,IGameCycle
         bow.SetActive(true);    
         gameOverPanel.SetActive(false);
         scoreText.text = "Score: 0";
-       
 
+        PositionPlayerInFrontOfTarget();
         StartCoroutine(UpdateTimer());
-
-        if (guideButton != null)
-        {
-            guideButton.onClick.AddListener(() => StartCoroutine(GuideEnable(0)));
-        }
-
-
+        IsActive = true; // Mark this game as active
+        GuideManager.Instance.guideButton.gameObject.SetActive(true); // Show guide button
     }
-
+    void PositionPlayerInFrontOfTarget()
+    {
+        Vector3 targetPosition = target.transform.position;
+        //targetPosition + target.transform.forward * 5; 
+        player.transform.position = new Vector3(276f, 0f, 179.1f);
+        player.transform.rotation = Quaternion.Euler(0f, 92.5f, 0f);
+        player.transform.LookAt(targetPosition);
+    }
     public void GetPoint(int points)
     {
 
@@ -81,7 +79,6 @@ public class AutumnGame : MonoBehaviour,IGameCycle
         target.SetActive(true);    
         scoreText.text = "Score: 0";
         gameOverPanel.SetActive(false);
-        StartCoroutine(GuideEnable(time));
 
         StartCoroutine(UpdateTimer());
     }
@@ -106,6 +103,8 @@ public class AutumnGame : MonoBehaviour,IGameCycle
         gameActive = false;
         gameOverText.text = success ? "Great you got the target points!" : "Time's up! You lose.";
         StartCoroutine(endEnable());
+        IsActive = false; // Mark this game as inactive
+        GuideManager.Instance.guideButton.gameObject.SetActive(false);
         target.SetActive(false);
         bow.SetActive(false);
         Manager.Instance.OnGameEnded(success,Manager.Season.Autumn, Manager.Season.Winter,Manager.Instance.winterGameObject);
@@ -121,30 +120,7 @@ public class AutumnGame : MonoBehaviour,IGameCycle
         gameOverPanel.SetActive(false);
 
     }
-    public void GetGuideByButoon()
-    {
-      
-            StartCoroutine(GuideEnable(0));
-        
-    }
-    IEnumerator GuideEnable(float initialtime)
-    {
-
-        GuidePanel.SetActive(true);
-        yield return new WaitForSeconds(initialtime);
-
-        string[] message =
-        {
-          "Now Roben Hood show me your talent in archery...","Make 300 points to win this game so the winter come...", "Good Luck..!"
-        };
-        float[] messageDuration = { 3, 4, 2 };
-        for (int i = 0; i < message.Length; i++)
-        {
-            guideText.text = message[i];
-            yield return new WaitForSeconds(messageDuration[i]);
-        }
-        GuidePanel.SetActive(false);
-    }
+   
    
    
 }

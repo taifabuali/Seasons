@@ -117,6 +117,12 @@ namespace StarterAssets
         public GameObject playerCamera;
         public GameObject target;
 
+        public float speed = 10f;
+        public Rigidbody Rigidbody;
+        public bool Sleding = false;
+        public GameObject sled;
+
+
         [SerializeField]
         float upwardAngle = 30f;
 
@@ -179,6 +185,10 @@ namespace StarterAssets
                 return;
 
         }
+        private void FixedUpdate()
+        {
+            SledMovement();
+        }
         private void AimShoot()
         {
             if (_input.isAiming && Grounded && !_input.sprint)
@@ -221,8 +231,20 @@ namespace StarterAssets
             // Adjust the shooting force
 //            arrow.GetComponent<Rigidbody>().AddForce(shootDirection * forceMagnitude, ForceMode.Impulse);
  //       }
-
-
+       public void SledMovement()
+       {
+            if (_input.isSled && Grounded)
+            {
+                Sleding = !Sleding;
+                sled.SetActive(Sleding);
+            }
+            if (Sleding)
+            {
+                Vector3 Forward = transform.forward * speed * Time.deltaTime;
+                Rigidbody.AddForce(Forward, ForceMode.Force);
+            }
+        }
+       
 
         private void LateUpdate()
         {

@@ -51,7 +51,6 @@ public class SummerGame : MonoBehaviour, IGameCycle
 
         timer = gameDuration;
         //hintPanel.gameObject.SetActive(false);
-        mushroomsCollected = 0;
         gameActive = true;
 
         gameOverPanel.SetActive(false);
@@ -101,8 +100,8 @@ public class SummerGame : MonoBehaviour, IGameCycle
     {
         mushroomsCollected += points;
         scoreText.text = "Score: " + mushroomsCollected;
-
-        if (mushroomsCollected >= mushroomPositions.Length)
+        Debug.Log(scoreText.text);
+        if (mushroomsCollected >= 3)
         {
             EndGame(true);
 

@@ -16,7 +16,7 @@ public class HintBoard : MonoBehaviour
     public GameObject hintPanel;
     public Button hintButton;
     public Button mushroomButton;
-
+    public GameObject mushroom;
     public HashSet<int> hintSet = new HashSet<int>();
 
     [Header("Mushroom")]
@@ -37,8 +37,8 @@ public class HintBoard : MonoBehaviour
 
         if (mushroomTransform.Length > index)
         {
-            GameObject mushroom = Instantiate(mushroomPrefab, mushroomTransform[index], Quaternion.identity);
-            mushroom.SetActive(true);
+           mushroom = Instantiate(mushroomPrefab, mushroomTransform[index], Quaternion.identity);
+           mushroom.SetActive(true);
             var mushroomComponent = mushroom.GetComponent<Mushroom>();
             mushroomComponent.AssignButton(mushroomButton);
         }

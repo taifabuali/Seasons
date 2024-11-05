@@ -9,6 +9,7 @@ TagManager:
   - Mushroom
   - Target
   - Arrow
+  - Sled
   layers:
   - Default
   - TransparentFX

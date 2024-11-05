@@ -216,7 +216,7 @@ public class Manager : MonoBehaviour, IGameManager
                 seasonalPhysicMaterial.staticFriction = 0.4f;
                 break;
             case Season.Winter:
-                seasonalPhysicMaterial.dynamicFriction = 0.1f; //(slippery)
+                seasonalPhysicMaterial.dynamicFriction = 0f; //(slippery)
                 seasonalPhysicMaterial.staticFriction = 0.1f;
                 break;
             case Season.Spring:

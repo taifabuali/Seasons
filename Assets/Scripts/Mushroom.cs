@@ -14,23 +14,24 @@ public class Mushroom : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             collectMushroomButton.gameObject.SetActive(true);
-            collectMushroomButton.onClick.AddListener(() => MushroomCollected());
+           
 
         }
     }
 
     public void MushroomCollected()
     {
+        gameObject.SetActive(false);
+
         Debug.Log("Mushroom collected!");
         SummerGame.Instance.GetPoint(scoreValue);
         collectMushroomButton.gameObject.SetActive(false);
 
-        gameObject.SetActive(false);  
     }
     public void AssignButton(Button button)
     {
         collectMushroomButton = button;
-        
+        collectMushroomButton.onClick.AddListener(() => MushroomCollected());
 
     }
 
